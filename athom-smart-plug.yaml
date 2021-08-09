@@ -32,13 +32,16 @@ binary_sensor:
       mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Power Button"
-    on_press:
-      - switch.toggle: relay
-    on_click:
-      min_length: 4s
-      max_length: 8s
-      then:
-        - switch.turn_on: restart_switch
+    on_multi_click:
+      - timing:
+          - ON for at most 1s
+          - OFF for at least 0.2s
+        then:
+          - switch.toggle: relay
+      - timing:
+          - ON for at least 4s
+        then:
+          - switch.turn_on: restart_switch
 
 sensor:
   - platform: uptime
