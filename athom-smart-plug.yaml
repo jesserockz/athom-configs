@@ -15,6 +15,8 @@ api:
 
 ota:
 
+logger:
+
 web_server:
   port: 80
 
@@ -92,16 +94,6 @@ sensor:
     filters:
       - multiply: 0.001
 
-output:
-  - platform: gpio
-    id: red_led_output
-    pin: GPIO13
-
-light:
-  - platform: binary
-    id: red_led
-    name: "${friendly_name} Red LED"
-    output: red_led_output
 
 switch:
   - platform: restart
@@ -113,14 +105,10 @@ switch:
     pin: GPIO14
     id: relay
 
-    # Turn off red LED to show blue when turned on
-    on_turn_on:
-      - light.turn_off: red_led
-
-    # Turns on the red LED once the plug is turned off. Stock plug doesn't do this, to restore normal behavior remove the on_turn_on and on_turn_off
-    # blocks.
-    on_turn_off:
-      - light.turn_on: red_led
+status_led:
+  pin:
+    inverted: true
+    number: GPIO13
 
 time:
   - platform: sntp
