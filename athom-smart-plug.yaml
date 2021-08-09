@@ -1,0 +1,126 @@
+substitutions:
+  device_name: "athom-smart-plug"
+  friendly_name: "Athom Smart Plug"
+
+esphome:
+  name: "${device_name}"
+  name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
+  project:
+    name: athom.smart_plug
+    version: "1.0"
+
+api:
+
+ota:
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: 3
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "${friendly_name} Power Button"
+    on_press:
+      - switch.toggle: relay
+    on_click:
+      min_length: 4s
+      max_length: 8s
+      then:
+        - switch.turn_on: restart_switch
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+
+  - platform: hlw8012
+    sel_pin:
+      number: GPIO12
+      inverted: True
+    cf_pin: GPIO4
+    cf1_pin: GPIO5
+    voltage_divider: 780
+    current:
+      name: "${friendly_name} Current"
+      filters:
+          - calibrate_linear:
+            - 0.0000 -> 0.0110 # Relay off no load
+            - 0.0097 -> 0.0260 # Relay on no load
+            - 0.9270 -> 0.7570
+            - 2.0133 -> 1.6330
+            - 2.9307 -> 2.3750
+            - 5.4848 -> 4.4210
+            - 8.4308 -> 6.8330
+            - 9.9171 -> 7.9830
+          # Normalize for plug load
+          - lambda: if (x < 0.0260) return 0; else return (x - 0.0260);
+    voltage:
+      name: "${friendly_name} Voltage"
+
+    power:
+      name: "${friendly_name} Power"
+      id: socket_my_power
+      unit_of_measurement: W
+      filters:
+          - calibrate_linear:
+            - 0.0000 -> 0.5900 # Relay off no load
+            - 0.0000 -> 1.5600 # Relay on no load
+            - 198.5129 -> 87.8300
+            - 434.2469 -> 189.5000
+            - 628.6241 -> 273.9000
+            - 1067.0067 -> 460.1000
+            - 1619.8098 -> 699.2000
+            - 2043.0282 -> 885.0000
+          # Normalize for plug load
+          - lambda: if (x < 1.5600) return 0; else return (x - 1.5600);
+    change_mode_every: 1
+    update_interval: 5s
+
+  - platform: total_daily_energy
+    name: "${friendly_name} Total Daily Energy"
+    power_id: socket_my_power
+    unit_of_measurement: kWh
+    filters:
+      - multiply: 0.001
+
+output:
+  - platform: gpio
+    id: red_led_output
+    pin: GPIO13
+
+light:
+  - platform: binary
+    id: red_led
+    name: "${friendly_name} Red LED"
+    output: red_led_output
+
+switch:
+  - platform: restart
+    id: restart_switch
+    name: "${friendly_name} Restart"
+
+  - platform: gpio
+    name: "${friendly_name}"
+    pin: GPIO14
+    id: relay
+
+    # Turn off red LED to show blue when turned on
+    on_turn_on:
+      - light.turn_off: red_led
+
+    # Turns on the red LED once the plug is turned off. Stock plug doesn't do this, to restore normal behavior remove the on_turn_on and on_turn_off
+    # blocks.
+    on_turn_off:
+      - light.turn_on: red_led
+
+time:
+  - platform: sntp
