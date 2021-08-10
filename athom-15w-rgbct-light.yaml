@@ -25,6 +25,10 @@ wifi:
 
 captive_portal:
 
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime Sensor"

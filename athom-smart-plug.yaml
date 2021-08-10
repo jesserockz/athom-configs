@@ -8,7 +8,7 @@ esphome:
   platform: ESP8266
   board: esp8285
   project:
-    name: athom.smart_plug
+    name: athom.smart-plug
     version: "1.0"
 
 api:
@@ -42,6 +42,8 @@ binary_sensor:
           - ON for at least 4s
         then:
           - switch.turn_on: restart_switch
+  - platform: status
+    name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime

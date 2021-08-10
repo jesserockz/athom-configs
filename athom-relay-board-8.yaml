@@ -32,6 +32,8 @@ binary_sensor:
       number: GPIO2
       mode: INPUT_PULLUP
       inverted: true
+  - platform: status
+    name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime
