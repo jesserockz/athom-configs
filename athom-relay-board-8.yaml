@@ -1,6 +1,8 @@
 substitutions:
   device_name: "athom-relay-board-x8"
   friendly_name: "Athom Relay Board x8"
+  project_name: "athom.relay-board-x8"
+  project_version: "1.0"
 
 esphome:
   name: "${device_name}"
@@ -8,8 +10,8 @@ esphome:
   platform: ESP8266
   board: esp8285
   project:
-    name: athom.relay-board-x8
-    version: "1.0"
+    name: "${project_name}"
+    version: "${project_version}"
 
 api:
 
