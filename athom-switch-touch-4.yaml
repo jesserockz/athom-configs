@@ -1,0 +1,112 @@
+substitutions:
+  device_name: "athom-sw034us"
+  friendly_name: "Athom Switch SW034US"
+
+esphome:
+  name: "${device_name}"
+  name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
+  project:
+    name: athom.smart-plug
+    version: "1.0"
+
+api:
+
+ota:
+
+logger:
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO12
+    name: "${friendly_name} Button 1"
+    on_multi_click:
+      - timing:
+          - ON for at most 1s
+          - OFF for at least 0.2s
+        then:
+          - light.toggle: light1
+      - timing:
+          - ON for at least 4s
+        then:
+          - switch.turn_on: restart_switch
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO3
+    name: "${friendly_name} Button 2"
+    on_click:
+      - light.toggle: light2
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO5
+    name: "${friendly_name} Button 3"
+    on_click:
+      - light.toggle: light3
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO16
+    name: "${friendly_name} Button 4"
+    on_click:
+      - light.toggle: light4
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+
+switch:
+  - platform: restart
+    id: restart_switch
+    name: "${friendly_name} Restart"
+
+output:
+  - platform: gpio
+    pin: GPIO13
+    id: relay1
+  - platform: gpio
+    pin: GPIO4
+    id: relay2
+  - platform: gpio
+    pin: GPIO15
+    id: relay3
+  - platform: gpio
+    pin: GPIO14
+    id: relay4
+
+light:
+  - platform: status_led
+    name: "${friendly_name} Wifi LED"
+    pin:
+      number: GPIO0
+      inverted: true
+  - platform: binary
+    name: "${friendly_name} Light 1"
+    id: light1
+    output: relay1
+  - platform: binary
+    name: "${friendly_name} Light 2"
+    id: light2
+    output: relay2
+  - platform: binary
+    name: "${friendly_name} Light 3"
+    id: light3
+    output: relay3
+  - platform: binary
+    name: "${friendly_name} Light 4"
+    id: light4
+    output: relay4
