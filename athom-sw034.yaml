@@ -1,6 +1,6 @@
 substitutions:
   device_name: "athom-sw034us"
-  friendly_name: "Athom Switch SW034US"
+  friendly_name: "Athom SW034US"
 
 esphome:
   name: "${device_name}"
@@ -8,7 +8,7 @@ esphome:
   platform: ESP8266
   board: esp8285
   project:
-    name: athom.smart-plug
+    name: athom.sw034us
     version: "1.0"
 
 api:
@@ -16,6 +16,7 @@ api:
 ota:
 
 logger:
+  baud_rate: 0
 
 web_server:
   port: 80
@@ -28,6 +29,8 @@ captive_portal:
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
+
+  # Touch Buttons
   - platform: gpio
     pin:
       inverted: true
@@ -35,7 +38,7 @@ binary_sensor:
     name: "${friendly_name} Button 1"
     on_multi_click:
       - timing:
-          - ON for at most 1s
+          - ON for at most 0.5s
           - OFF for at least 0.2s
         then:
           - light.toggle: light1
@@ -49,21 +52,27 @@ binary_sensor:
       number: GPIO3
     name: "${friendly_name} Button 2"
     on_click:
-      - light.toggle: light2
+      max_length: 0.5s
+      then:
+        - light.toggle: light2
   - platform: gpio
     pin:
       inverted: true
       number: GPIO5
     name: "${friendly_name} Button 3"
     on_click:
-      - light.toggle: light3
+      max_length: 0.5s
+      then:
+        - light.toggle: light3
   - platform: gpio
     pin:
       inverted: true
       number: GPIO16
     name: "${friendly_name} Button 4"
     on_click:
-      - light.toggle: light4
+      max_length: 0.5s
+      then:
+        - light.toggle: light4
 
 sensor:
   - platform: uptime
@@ -75,6 +84,7 @@ switch:
     name: "${friendly_name} Restart"
 
 output:
+  # Relays
   - platform: gpio
     pin: GPIO13
     id: relay1
@@ -94,6 +104,8 @@ light:
     pin:
       number: GPIO0
       inverted: true
+
+  # Relays
   - platform: binary
     name: "${friendly_name} Light 1"
     id: light1
