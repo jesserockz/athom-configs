@@ -1,0 +1,151 @@
+substitutions:
+  device_name: "athom-sw033us"
+  friendly_name: "Athom SW033US"
+
+esphome:
+  name: "${device_name}"
+  name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
+  project:
+    name: athom.sw033us
+    version: "1.0"
+
+api:
+
+ota:
+
+logger:
+  baud_rate: 0
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+  # Touch Buttons
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO12
+    name: "${friendly_name} Button 1"
+    on_multi_click:
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at least 0.2s
+        then:
+          - light.toggle: light1
+      - timing:
+          - ON for at least 4s
+        then:
+          - switch.turn_on: restart_switch
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO3
+    name: "${friendly_name} Button 2"
+    on_click:
+      max_length: 0.5s
+      then:
+        - light.toggle: light2
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO5
+    name: "${friendly_name} Button 3"
+    on_click:
+      max_length: 0.5s
+      then:
+        - light.toggle: light3
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+
+switch:
+  - platform: restart
+    id: restart_switch
+    name: "${friendly_name} Restart"
+
+output:
+  # Relays
+  - platform: gpio
+    pin: GPIO13
+    id: relay1
+  - platform: gpio
+    pin: GPIO4
+    id: relay2
+  - platform: gpio
+    pin: GPIO15
+    id: relay3
+
+  # Button LEDs (1.0 = Blue / 0.0 = Red)
+  - platform: esp8266_pwm
+    pin: GPIO16
+    inverted: true
+    id: button_led1
+  - platform: esp8266_pwm
+    pin: GPIO14
+    inverted: true
+    id: button_led2
+  - platform: esp8266_pwm
+    pin: GPIO1
+    inverted: true
+    id: button_led3
+
+light:
+  - platform: status_led
+    name: "${friendly_name} Wifi LED"
+    pin:
+      number: GPIO0
+      inverted: true
+
+  # Relays
+  - platform: binary
+    name: "${friendly_name} Light 1"
+    id: light1
+    output: relay1
+    on_turn_on:
+      - light.turn_on: led1
+    on_turn_off:
+      - light.turn_off: led1
+  - platform: binary
+    name: "${friendly_name} Light 2"
+    id: light2
+    output: relay2
+    on_turn_on:
+      - light.turn_on: led2
+    on_turn_off:
+      - light.turn_off: led2
+  - platform: binary
+    name: "${friendly_name} Light 3"
+    id: light3
+    output: relay3
+    on_turn_on:
+      - light.turn_on: led3
+    on_turn_off:
+      - light.turn_off: led3
+
+  # Button LEDs
+  - platform: monochromatic
+    name: "${friendly_name} LED1"
+    id: led1
+    output: button_led1
+    default_transition_length: 500ms
+  - platform: monochromatic
+    name: "${friendly_name} LED2"
+    id: led2
+    output: button_led2
+    default_transition_length: 500ms
+  - platform: monochromatic
+    name: "${friendly_name} LED3"
+    id: led3
+    output: button_led3
+    default_transition_length: 500ms
