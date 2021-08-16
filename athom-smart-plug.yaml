@@ -98,6 +98,7 @@ sensor:
     name: "${friendly_name} Total Daily Energy"
     power_id: socket_my_power
     unit_of_measurement: kWh
+    accuracy_decimals: 3
     filters:
       - multiply: 0.001
 
