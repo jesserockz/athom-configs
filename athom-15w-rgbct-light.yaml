@@ -3,6 +3,7 @@ substitutions:
   friendly_name: "Athom 15W RGBCT Light"
   project_name: "athom.15w-rgbct-light"
   project_version: "1.0"
+  color_interlock: "true"
 
 esphome:
   name: "${device_name}"
@@ -69,3 +70,4 @@ light:
     color_temperature: ct_output
     cold_white_color_temperature: 153 mireds
     warm_white_color_temperature: 500 mireds
+    color_interlock: "${color_interlock}"
