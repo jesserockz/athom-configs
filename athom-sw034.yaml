@@ -36,6 +36,7 @@ binary_sensor:
       inverted: true
       number: GPIO12
     name: "${friendly_name} Button 1"
+    disabled_by_default: true
     on_multi_click:
       - timing:
           - ON for at most 0.5s
@@ -51,6 +52,7 @@ binary_sensor:
       inverted: true
       number: GPIO3
     name: "${friendly_name} Button 2"
+    disabled_by_default: true
     on_click:
       max_length: 0.5s
       then:
@@ -60,6 +62,7 @@ binary_sensor:
       inverted: true
       number: GPIO5
     name: "${friendly_name} Button 3"
+    disabled_by_default: true
     on_click:
       max_length: 0.5s
       then:
@@ -69,6 +72,7 @@ binary_sensor:
       inverted: true
       number: GPIO16
     name: "${friendly_name} Button 4"
+    disabled_by_default: true
     on_click:
       max_length: 0.5s
       then:
@@ -101,6 +105,7 @@ output:
 light:
   - platform: status_led
     name: "${friendly_name} Wifi LED"
+    disabled_by_default: true
     pin:
       number: GPIO0
       inverted: true

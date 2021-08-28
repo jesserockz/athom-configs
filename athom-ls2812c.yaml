@@ -3,6 +3,7 @@ substitutions:
   friendly_name: "Athom LS2812C"
   project_name: "athom.ls2812c"
   project_version: "1.0"
+  button_toggle: "true"
 
 esphome:
   name: "${device_name}"
@@ -38,7 +39,11 @@ binary_sensor:
       number: GPIO0
       inverted: true
     on_click:
-      - light.toggle: leds
+      - if:
+          condition:
+            lambda: "${button_toggle} == true"
+          then:
+            - light.toggle: leds
 
 sensor:
   - platform: uptime

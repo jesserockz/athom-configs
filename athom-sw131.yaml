@@ -38,6 +38,7 @@ binary_sensor:
       inverted: true
       number: GPIO3
     name: "${friendly_name} Button"
+    disabled_by_default: true
     on_multi_click:
       - timing:
           - ON for at most 0.5s
@@ -74,6 +75,7 @@ light:
   # Red LED
   - platform: status_led
     name: "${friendly_name} Wifi LED"
+    disabled_by_default: true
     pin:
       number: GPIO0
       inverted: true
@@ -91,6 +93,7 @@ light:
   # Blue LED
   - platform: monochromatic
     name: "${friendly_name} LED"
+    disabled_by_default: true
     id: led1
     output: button_led1
     default_transition_length: 500ms

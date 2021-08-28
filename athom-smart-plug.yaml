@@ -28,12 +28,16 @@ wifi:
 captive_portal:
 
 binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
   - platform: gpio
     pin:
       number: 3
       mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Power Button"
+    disabled_by_default: true
     on_multi_click:
       - timing:
           - ON for at most 1s
@@ -44,8 +48,6 @@ binary_sensor:
           - ON for at least 4s
         then:
           - switch.turn_on: restart_switch
-  - platform: status
-    name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime
@@ -113,10 +115,13 @@ switch:
     pin: GPIO14
     id: relay
 
-status_led:
-  pin:
-    inverted: true
-    number: GPIO13
+light:
+  - platform: status_led
+    name: "${friendly_name} Status LED"
+    disabled_by_default: true
+    pin:
+      inverted: true
+      number: GPIO13
 
 time:
   - platform: sntp
