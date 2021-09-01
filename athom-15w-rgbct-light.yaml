@@ -69,3 +69,4 @@ light:
     color_temperature: ct_output
     cold_white_color_temperature: 153 mireds
     warm_white_color_temperature: 500 mireds
+    color_interlock: true
