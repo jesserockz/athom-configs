@@ -54,6 +54,7 @@ binary_sensor:
     pin:
       number: 14
       mode: INPUT_PULLUP
+      inverted: true
     name: "${friendly_name} Power Switch"
     filters:
       - delayed_on: 100ms
