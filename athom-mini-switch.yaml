@@ -18,13 +18,12 @@ api:
 ota:
 
 logger:
-  baud_rate: 0
 
 web_server:
   port: 80
 
 wifi:
-  ap: {} # This spawns an AP with the device name and mac address with no password.
+  ap: {}
 
 captive_portal:
 
@@ -47,7 +46,7 @@ light:
       inverted: true
 
   - platform: binary
-    id: relay
+    id: mini_relay
     output: relay_output
     name: "${friendly_name} Light"
     restore_mode: RESTORE_DEFAULT_ON
@@ -55,41 +54,19 @@ light:
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime Sensor"
+    disabled_by_default: true
 
 binary_sensor:
-  - platform: status
-    name: "${friendly_name} Status"
-
-  # Button on mini switch
-  - platform: gpio
-    id: button
-    name: "${friendly_name} Button"
-    disabled_by_default: true
-    pin:
-      number: GPIO3
-      inverted: true
-      mode: INPUT_PULLUP
-    on_multi_click:
-      - timing:
-          - ON for at most 0.5s
-          - OFF for at least 0.2s
-        then:
-          - light.toggle: relay
-      - timing:
-          - ON for at least 4s
-        then:
-          - switch.turn_on: restart_switch
-
   # Wired switch
   - platform: gpio
     id: the_switch
-    name: "${friendly_name} Switch"
+    name: "${friendly_name} Power Switch"
     disabled_by_default: true
     pin:
       number: GPIO14
       mode: INPUT_PULLUP
     on_state:
-      - light.toggle: relay
+      - light.toggle: mini_relay
 
     on_multi_click:
       - timing:
@@ -103,3 +80,25 @@ binary_sensor:
           - OFF for at most 0.5s
         then:
           - switch.turn_on: restart_switch
+
+  # Button on mini switch
+  - platform: gpio
+    pin:
+      number: GPIO3
+      mode: INPUT_PULLUP
+      inverted: true
+    name: "${friendly_name} Power Button"
+    disabled_by_default: true
+    on_multi_click:
+      - timing:
+          - ON for at most 1s
+          - OFF for at least 0.2s
+        then:
+          - light.toggle: mini_relay
+      - timing:
+          - ON for at least 4s
+        then:
+          - switch.turn_on: restart_switch
+
+  - platform: status
+    name: "${friendly_name} Status"
