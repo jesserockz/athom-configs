@@ -1,0 +1,40 @@
+name: Build binaries
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build ${{ matrix.device }} - ${{ matrix.esphome }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - 7w-rgbww-light
+          - 15w-rgbct-light
+          - garage-door
+          - ls2812c
+          - mini-switch
+          - relay-board-x2
+          - relay-board-x8
+          - smart-plug
+          - sw031
+          - sw032
+          - sw033
+          - sw034
+          - sw131
+        esphome:
+          - latest
+          - beta
+          - dev
+
+    container: ghcr.io/esphome/esphome:${{ matrix.esphome }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/build
+        with:
+          device: ${{ matrix.device }}

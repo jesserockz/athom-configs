@@ -41,7 +41,7 @@ binary_sensor:
     on_click:
       - if:
           condition:
-            lambda: "${button_toggle} == true"
+            lambda: "return ${button_toggle} == true;"
           then:
             - light.toggle: leds
 

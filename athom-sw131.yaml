@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-sw131us"
-  friendly_name: "Athom SW131US"
-  project_name: "athom.sw131us"
+  device_name: "athom-sw131"
+  friendly_name: "Athom SW131"
+  project_name: "athom.sw131"
   project_version: "1.0"
 
 esphome:
