@@ -32,7 +32,6 @@ sensor:
     name: "${friendly_name} Uptime Sensor"
     disabled_by_default: true
 
-
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
