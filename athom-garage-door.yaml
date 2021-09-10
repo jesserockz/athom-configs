@@ -27,61 +27,75 @@ wifi:
 
 captive_portal:
 
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+    disabled_by_default: true
+
 binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
   - platform: gpio
+    name: "${friendly_name} Contact"
+    disabled_by_default: true
+    device_class: garage_door
+    id: contact
     pin:
       number: GPIO4
       inverted: true
-    name: "${friendly_name} sensor"
-    id: "Sensor"
-    disabled_by_default: true
     filters:
       - delayed_on: 20ms
 
   - platform: gpio
     pin:
-      number: 14
+      number: GPIO14
       mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Button"
+    disabled_by_default: true
     on_multi_click:
       - timing:
           - ON for at most 1s
           - OFF for at least 0.2s
         then:
-          - switch.toggle: relay
-          
+          switch.turn_on: relay
+      - timing:
+          - ON for at least 4s
+        then:
+          switch.turn_on: restart_switch
+
 switch:
+  - platform: restart
+    id: restart_switch
+    name: "${friendly_name} Restart"
+
   - platform: gpio
     pin: GPIO5
     name: "${friendly_name} Relay"
-    id: "relay"
+    id: relay
     disabled_by_default: true
     on_turn_on:
-     - switch.turn_on: relay_led
-     - delay: 1s
-     - switch.turn_off: relay
-     - switch.turn_off: relay_led
-    
-    
-  - platform: gpio
-    id: relay_led
-    pin:
-      number: GPIO12
-    
+      - light.turn_on: wifi_led
+      - delay: 500ms
+      - switch.turn_off: relay
+      - light.turn_off: wifi_led
+
+light:
+  - platform: status_led
+    name: "${friendly_name} WiFi LED"
+    id: wifi_led
+    disabled_by_default: true
+    pin: GPIO12
+
 cover:
   - platform: template
     device_class: garage
     name: "${friendly_name}"
-    lambda: |-
-      if (id(Sensor).state) {
-        return COVER_OPEN;
-      } else {
-        return COVER_CLOSED;
-      }
+    lambda: "return id(contact).state ? COVER_OPEN : COVER_CLOSED;"
     open_action:
-      - switch.toggle: relay
+      - switch.turn_on: relay
+    stop_action:
+      - switch.turn_on: relay
     close_action:
-      - switch.toggle: relay
-    
- 
+      - switch.turn_on: relay
