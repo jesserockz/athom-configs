@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-garage-door-opener"
+  device_name: "athom-garage-door"
   friendly_name: "Athom Garage Door"
-  project_name: "athom.garage-door-opener"
+  project_name: "athom.garage-door"
   project_version: "1.0"
 
 esphome:
