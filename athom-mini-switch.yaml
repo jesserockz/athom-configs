@@ -27,60 +27,78 @@ wifi:
 
 captive_portal:
 
-
 switch:
   - platform: restart
     id: restart_switch
     name: "${friendly_name} Restart"
-      
+
+output:
   - platform: gpio
-    id: blue_led
+    id: relay_output
+    pin: GPIO13
+
+light:
+  - platform: status_led
+    name: "${friendly_name} Blue LED"
+    disabled_by_default: true
     pin:
       number: GPIO4
       inverted: true
-      
-  - platform: gpio
-    pin: GPIO13
+
+  - platform: binary
     id: mini_relay
-    name: "${friendly_name}"
-    on_turn_on:
-      - switch.turn_on: blue_led
-    on_turn_off:
-      - switch.turn_off: blue_led
-    
+    output: relay_output
+    name: "${friendly_name} Light"
+    restore_mode: RESTORE_DEFAULT_ON
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+    disabled_by_default: true
 
 binary_sensor:
+  # Wired switch
   - platform: gpio
-    pin:
-      number: 14
-      mode: INPUT_PULLUP
-      inverted: true
+    id: the_switch
     name: "${friendly_name} Power Switch"
-    filters:
-      - delayed_on: 100ms
+    disabled_by_default: true
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
     on_state:
-      then:
-        - switch.toggle: mini_relay
-        
+      - light.toggle: mini_relay
+
+    on_multi_click:
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at most 0.5s
+          - ON for at most 0.5s
+          - OFF for at most 0.5s
+          - ON for at most 0.5s
+          - OFF for at most 0.5s
+          - ON for at most 0.5s
+          - OFF for at most 0.5s
+        then:
+          - switch.turn_on: restart_switch
+
+  # Button on mini switch
   - platform: gpio
     pin:
-      number: 3
+      number: GPIO3
       mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Power Button"
+    disabled_by_default: true
     on_multi_click:
       - timing:
           - ON for at most 1s
           - OFF for at least 0.2s
         then:
-          - switch.toggle: mini_relay
+          - light.toggle: mini_relay
       - timing:
           - ON for at least 4s
         then:
           - switch.turn_on: restart_switch
-          
+
   - platform: status
     name: "${friendly_name} Status"
-    
-time:
-  - platform: sntp

@@ -54,6 +54,7 @@ switch:
 light:
   - platform: status_led
     name: "${friendly_name} Status LED"
+    disabled_by_default: true
     pin:
       inverted: true
       number: GPIO16

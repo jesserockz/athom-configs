@@ -28,14 +28,16 @@ wifi:
 captive_portal:
 
 binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
   - platform: gpio
     name: "${friendly_name} IO2"
+    disabled_by_default: true
     pin:
       number: GPIO2
       mode: INPUT_PULLUP
       inverted: true
-  - platform: status
-    name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime
@@ -86,7 +88,10 @@ switch:
     pin: GPIO5
     id: relay8
 
-status_led:
-  pin:
-    inverted: true
-    number: GPIO2
+light:
+  - platform: status_led
+    name: "${friendly_name} Status LED"
+    disabled_by_default: true
+    pin:
+      inverted: true
+      number: GPIO2

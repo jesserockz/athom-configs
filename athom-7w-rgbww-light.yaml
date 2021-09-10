@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-15w-rgbct-light"
-  friendly_name: "Athom 15W RGBCT Light"
-  project_name: "athom.15w-rgbct-light"
+  device_name: "athom-7w-rgbww-light"
+  friendly_name: "Athom 7W RGBWW Light"
+  project_name: "athom.7w-rgbww-light"
   project_version: "1.0"
   color_interlock: "true"
 
@@ -52,22 +52,21 @@ output:
     id: blue_output
     pin: GPIO14
   - platform: esp8266_pwm
-    id: white_output
+    id: cold_output
     pin: GPIO5
   - platform: esp8266_pwm
-    id: ct_output
-    inverted: true
+    id: warm_output
     pin: GPIO13
 
 light:
-  - platform: rgbct
+  - platform: rgbww
     restore_mode: RESTORE_DEFAULT_ON
     name: "${friendly_name}"
     red: red_output
     green: green_output
     blue: blue_output
-    white_brightness: white_output
-    color_temperature: ct_output
+    warm_white: warm_output
+    cold_white: cold_output
     cold_white_color_temperature: 153 mireds
     warm_white_color_temperature: 500 mireds
     color_interlock: "${color_interlock}"
