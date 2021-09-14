@@ -111,9 +111,20 @@ switch:
     name: "${friendly_name} Restart"
 
   - platform: gpio
+    id: blue_led
+    pin:
+      number: GPIO13
+      inverted: true
+      
+  - platform: gpio
     name: "${friendly_name}"
     pin: GPIO14
     id: relay
+    on_turn_on:
+      - switch.turn_on: blue_led
+
+    on_turn_off:
+      - switch.turn_off: blue_led
 
 light:
   - platform: status_led
