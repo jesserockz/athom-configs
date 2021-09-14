@@ -120,6 +120,7 @@ switch:
     name: "${friendly_name}"
     pin: GPIO14
     id: relay
+    restore_mode: RESTORE_DEFAULT_ON
     on_turn_on:
       - switch.turn_on: blue_led
 
