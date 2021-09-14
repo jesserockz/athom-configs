@@ -77,7 +77,7 @@ switch:
     disabled_by_default: true
     on_turn_on:
       - light.turn_on: wifi_led
-      - delay: 500ms
+      - delay: 1s
       - switch.turn_off: relay
       - light.turn_off: wifi_led
 
