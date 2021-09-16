@@ -99,3 +99,8 @@ cover:
       - switch.turn_on: relay
     close_action:
       - switch.turn_on: relay
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
