@@ -9,7 +9,7 @@ If you are prompted that there is not enough space, you should upgrade `ESP8266_
 - Upload updated ESPHome firmware
 
 
-# Migrating to Tasmota
+# Migrating from Tasmota
 
 - First execute `SetOption78 1` in the console of Tasmota
 - Select firmware upgrade, upload `tasmota.bin.gz` and click start upgrade
