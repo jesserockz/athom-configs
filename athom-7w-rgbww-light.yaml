@@ -1,9 +1,8 @@
 substitutions:
-  device_name: "athom-7w-rgbww-light"
-  friendly_name: "Athom 7W RGBWW Light"
-  project_name: "athom.7w-rgbww-light"
+  device_name: "athom-rgbww-light"
+  friendly_name: "Athom RGBWW Light"
+  project_name: "athom.rgbww-light"
   project_version: "1.0"
-  color_interlock: "true"
 
 esphome:
   name: "${device_name}"
@@ -52,21 +51,26 @@ output:
     id: blue_output
     pin: GPIO14
   - platform: esp8266_pwm
-    id: cold_output
-    pin: GPIO5
-  - platform: esp8266_pwm
-    id: warm_output
+    id: warm_white_output
     pin: GPIO13
+  - platform: esp8266_pwm
+    id: white_output
+    pin: GPIO5
+
 
 light:
   - platform: rgbww
-    restore_mode: RESTORE_DEFAULT_ON
     name: "${friendly_name}"
     red: red_output
     green: green_output
     blue: blue_output
-    warm_white: warm_output
-    cold_white: cold_output
-    cold_white_color_temperature: 153 mireds
-    warm_white_color_temperature: 500 mireds
-    color_interlock: "${color_interlock}"
+    warm_white: warm_white_output
+    cold_white: white_output
+    cold_white_color_temperature: 6000 K
+    warm_white_color_temperature: 3000 K
+    color_interlock: true
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
