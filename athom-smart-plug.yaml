@@ -137,3 +137,8 @@ light:
 
 time:
   - platform: sntp
+  
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
