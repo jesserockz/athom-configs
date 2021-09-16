@@ -13,4 +13,4 @@ If you are prompted that there is not enough space, you should upgrade `ESP8266_
 
 - First execute `SetOption78 1` in the console of Tasmota
 - Select firmware upgrade, upload `tasmota.bin.gz` and click start upgrade
-http://ota.tasmota.com/tasmota/release
+- http://ota.tasmota.com/tasmota/release
