@@ -8,9 +8,12 @@ If you are prompted that there is not enough space, you should upgrade `ESP8266_
 - Connect to the hotspot and visit `http://192.168.4.1/update` in the browser
 - Upload updated ESPHome firmware
 
+# Migrating to Tasmota
+
+- Select firmware upgrade, upload `tasmota.bin.gz` and click Update
+- Download Tasmota firmware here http://ota.tasmota.com/tasmota/release
 
 # Migrating from Tasmota
 
 - First execute `SetOption78 1` in the console of Tasmota
-- Select firmware upgrade, upload `tasmota.bin.gz` and click start upgrade
-- Download Tasmota firmware here http://ota.tasmota.com/tasmota/release
+- Select firmware upgrade, Upload esphome firmware and click start upgrade
