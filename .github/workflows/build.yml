@@ -13,8 +13,8 @@ jobs:
       fail-fast: false
       matrix:
         device:
-          - 7w-rgbww-light
-          - 15w-rgbct-light
+          - rgbww-light
+          - rgbct-light
           - garage-door
           - ls2812c
           - mini-switch
