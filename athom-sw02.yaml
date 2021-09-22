@@ -127,3 +127,8 @@ light:
     id: light4
     output: led2
     default_transition_length: 500ms
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
