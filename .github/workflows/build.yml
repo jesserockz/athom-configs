@@ -21,11 +21,10 @@ jobs:
           - relay-board-x2
           - relay-board-x8
           - smart-plug
-          - sw031
+          - sw01
           - sw02
-          - sw033
-          - sw034
-          - sw131
+          - sw03
+          - sw04
         esphome:
           - latest
           - beta
