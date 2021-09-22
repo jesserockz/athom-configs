@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-sw034"
-  friendly_name: "Athom SW034"
-  project_name: "athom.sw034"
+  device_name: "athom-sw04"
+  friendly_name: "Athom SW04"
+  project_name: "athom.sw04"
   project_version: "1.0"
 
 esphome:
@@ -129,3 +129,8 @@ light:
     name: "${friendly_name} Light 4"
     id: light4
     output: relay4
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
