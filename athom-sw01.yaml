@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-sw031"
-  friendly_name: "Athom SW031"
-  project_name: "athom.sw031"
+  device_name: "athom-sw01"
+  friendly_name: "Athom SW01"
+  project_name: "athom.sw01"
   project_version: "1.0"
 
 esphome:
@@ -96,3 +96,8 @@ light:
     id: led1
     output: button_led1
     default_transition_length: 500ms
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
