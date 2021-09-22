@@ -22,7 +22,7 @@ jobs:
           - relay-board-x8
           - smart-plug
           - sw031
-          - sw032
+          - sw02
           - sw033
           - sw034
           - sw131
