@@ -19,7 +19,9 @@ jobs:
           - garage-door
           - ws2812b
           - mini-switch
+          - relay-board-x1
           - relay-board-x2
+          - relay-board-x4
           - relay-board-x8
           - smart-plug
           - sw01
