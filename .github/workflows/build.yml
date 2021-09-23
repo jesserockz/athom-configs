@@ -13,6 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         device:
+          - rgb-light
           - rgbww-light
           - rgbct-light
           - garage-door
