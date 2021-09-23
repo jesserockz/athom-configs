@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-ls2812c"
-  friendly_name: "Athom LS2812C"
-  project_name: "athom.ls2812c"
+  device_name: "athom-ws2812b"
+  friendly_name: "Athom WS2812B"
+  project_name: "athom.ws2812b"
   project_version: "1.0"
   button_toggle: "true"
 
@@ -65,3 +65,8 @@ light:
     effects:
       - addressable_rainbow:
       - addressable_scan:
+      
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
