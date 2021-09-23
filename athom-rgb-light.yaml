@@ -1,6 +1,6 @@
 substitutions:
   device_name: "athom-rgb-light"
-  friendly_name: "Athom RGB Light Strip"
+  friendly_name: "Athom RGB Light"
   project_name: "athom.rgb-light"
   project_version: "1.0"
 
