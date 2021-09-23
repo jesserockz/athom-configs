@@ -16,7 +16,7 @@ jobs:
           - rgbww-light
           - rgbct-light
           - garage-door
-          - ls2812c
+          - ws2812b
           - mini-switch
           - relay-board-x2
           - relay-board-x8
