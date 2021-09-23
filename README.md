@@ -18,3 +18,4 @@ If you are prompted that there is not enough space, you should upgrade `ESP8266_
 - First execute `SetOption78 1` in the console of Tasmota
 - Select firmware upgrade, upload `tasmota-minimal.bin` and click start upgrade
 - Select the firmware upgrade again, upload the firmware of ESPHome and click to start upgrade
+- Download ESPHome firmware here https://github.com/tarontop/athom-configs/actions/runs/1232013076
