@@ -58,3 +58,8 @@ light:
     pin:
       inverted: true
       number: GPIO16
+      
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
