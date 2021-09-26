@@ -111,25 +111,20 @@ switch:
     name: "${friendly_name} Restart"
 
   - platform: gpio
-    id: blue_led
-    pin:
-      number: GPIO13
-      inverted: true
-      
-  - platform: gpio
     name: "${friendly_name}"
     pin: GPIO14
     id: relay
     restore_mode: RESTORE_DEFAULT_ON
     on_turn_on:
-      - switch.turn_on: blue_led
+      - light.turn_on: blue_led
 
     on_turn_off:
-      - switch.turn_off: blue_led
+      - light.turn_off: blue_led
 
 light:
   - platform: status_led
     name: "${friendly_name} Status LED"
+    id: blue_led
     disabled_by_default: true
     pin:
       inverted: true
@@ -137,7 +132,7 @@ light:
 
 time:
   - platform: sntp
-  
+
 text_sensor:
   - platform: wifi_info
     ip_address:
