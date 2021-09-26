@@ -70,8 +70,9 @@ light:
     cold_white_color_temperature: 153 mireds
     warm_white_color_temperature: 500 mireds
     color_interlock: true
-    
+
 text_sensor:
   - platform: wifi_info
     ip_address:
       name: "${friendly_name} IP Address"
+      disabled_by_default: true

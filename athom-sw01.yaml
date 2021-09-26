@@ -96,8 +96,9 @@ light:
     id: led1
     output: button_led1
     default_transition_length: 500ms
-    
+
 text_sensor:
   - platform: wifi_info
     ip_address:
       name: "${friendly_name} IP Address"
+      disabled_by_default: true
