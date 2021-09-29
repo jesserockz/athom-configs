@@ -66,7 +66,7 @@ light:
     disabled_by_default: true
     pin:
       inverted: true
-      number: GPIO5
+      number: GPIO2
       
 text_sensor:
   - platform: wifi_info
