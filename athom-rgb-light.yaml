@@ -34,7 +34,6 @@ binary_sensor:
   - platform: gpio
     pin:
       number: 0
-      mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Button"
     disabled_by_default: true
@@ -57,7 +56,7 @@ switch:
   - platform: restart
     id: restart_switch
     name: "${friendly_name} Restart"
-    
+
 
 output:
   - platform: esp8266_pwm
@@ -80,8 +79,9 @@ light:
     green: green_output
     blue: blue_output
 
-    
+
 text_sensor:
   - platform: wifi_info
     ip_address:
       name: "${friendly_name} IP Address"
+      disabled_by_default: true
