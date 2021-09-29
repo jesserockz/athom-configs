@@ -67,7 +67,7 @@ light:
     pin:
       inverted: true
       number: GPIO5
-
+      
 text_sensor:
   - platform: wifi_info
     ip_address:
