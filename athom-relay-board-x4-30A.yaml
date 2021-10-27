@@ -1,0 +1,75 @@
+substitutions:
+  device_name: "athom-relay-board-x4-30A"
+  friendly_name: "Athom Relay Board x4 30A"
+  project_name: "athom.relay-board-x4-30A"
+  project_version: "1.0"
+
+esphome:
+  name: "${device_name}"
+  name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
+  project:
+    name: "${project_name}"
+    version: "${project_version}"
+
+api:
+
+ota:
+
+logger:
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+
+switch:
+  - platform: restart
+    id: restart_switch
+    name: "${friendly_name} Restart"
+
+  - platform: gpio
+    name: "${friendly_name} - 1"
+    pin: GPIO16
+    id: relay1
+
+  - platform: gpio
+    name: "${friendly_name} - 2"
+    pin: GPIO14
+    id: relay2
+
+  - platform: gpio
+    name: "${friendly_name} - 3"
+    pin: GPIO12
+    id: relay3
+
+  - platform: gpio
+    name: "${friendly_name} - 4"
+    pin: GPIO13
+    id: relay4
+
+light:
+  - platform: status_led
+    name: "${friendly_name} Status LED"
+    disabled_by_default: true
+    pin:
+      inverted: true
+      number: GPIO5
+      
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
+      disabled_by_default: true
