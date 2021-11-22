@@ -28,7 +28,7 @@ jobs:
           - sw02
           - sw03
           - sw04
-          - cb20-switch
+          - cb20
         esphome:
           - latest
           - beta
