@@ -1,12 +1,12 @@
 substitutions:
-  device_name: "athom-ws2812b"
+  name: "athom-ws2812b"
   friendly_name: "Athom WS2812B"
   project_name: "athom.ws2812b"
   project_version: "1.0"
   button_toggle: "true"
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
   platform: ESP8266
   board: esp01_1m
@@ -27,6 +27,9 @@ wifi:
   ap: {} # This spawns an AP with the device name and mac address with no password.
 
 captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-ws2812b.yaml
 
 binary_sensor:
   - platform: status

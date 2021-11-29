@@ -1,11 +1,11 @@
 substitutions:
-  device_name: "athom-mini-switch"
+  name: "athom-mini-switch"
   friendly_name: "Athom Mini Switch"
   project_name: "athom.mini-switch"
   project_version: "1.0"
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
   platform: ESP8266
   board: esp8285
@@ -26,6 +26,9 @@ wifi:
   ap: {}
 
 captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-mini-switch.yaml
 
 switch:
   - platform: restart
