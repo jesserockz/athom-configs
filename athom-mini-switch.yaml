@@ -56,7 +56,7 @@ light:
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
     disabled_by_default: true
 
 binary_sensor:
