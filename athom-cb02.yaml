@@ -55,8 +55,7 @@ binary_sensor:
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime Sensor"
-
-
+    disabled_by_default: true
 
 switch:
   - platform: restart
@@ -82,9 +81,6 @@ light:
     pin:
       inverted: true
       number: GPIO4
-
-time:
-  - platform: sntp
 
 text_sensor:
   - platform: wifi_info
