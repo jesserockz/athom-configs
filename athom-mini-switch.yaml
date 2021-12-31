@@ -30,9 +30,9 @@ captive_portal:
 dashboard_import:
   package_import_url: github://athom-tech/athom-configs/athom-mini-switch.yaml
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
 output:
@@ -82,7 +82,7 @@ binary_sensor:
           - ON for at most 0.5s
           - OFF for at most 0.5s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
   # Button on mini switch
   - platform: gpio
@@ -101,7 +101,7 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
   - platform: status
     name: "${friendly_name} Status"

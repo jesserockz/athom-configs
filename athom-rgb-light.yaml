@@ -50,17 +50,16 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime Sensor"
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
-
 
 output:
   - platform: esp8266_pwm
@@ -73,8 +72,6 @@ output:
     id: blue_output
     pin: GPIO14
 
-
-
 light:
   - platform: rgb
     name: "${friendly_name}"
@@ -82,7 +79,6 @@ light:
     red: red_output
     green: green_output
     blue: blue_output
-
 
 text_sensor:
   - platform: wifi_info

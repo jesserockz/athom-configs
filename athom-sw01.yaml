@@ -51,15 +51,16 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
 sensor:
   - platform: uptime
     name: "${friendly_name} Uptime Sensor"
+    disabled_by_default: true
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
 output:
