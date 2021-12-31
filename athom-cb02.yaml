@@ -27,6 +27,9 @@ wifi:
 
 captive_portal:
 
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-cb02.yaml
+
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
@@ -47,19 +50,19 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
+    disabled_by_default: true
 
-
-
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     name: "${friendly_name}"
     pin: GPIO13
@@ -79,9 +82,6 @@ light:
     pin:
       inverted: true
       number: GPIO4
-
-time:
-  - platform: sntp
 
 text_sensor:
   - platform: wifi_info

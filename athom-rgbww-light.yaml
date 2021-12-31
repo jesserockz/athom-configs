@@ -28,7 +28,7 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-rgbww-light.ymal
+  package_import_url: github://athom-tech/athom-configs/athom-rgbww-light.yaml
 
 binary_sensor:
   - platform: status
@@ -36,11 +36,11 @@ binary_sensor:
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
 output:

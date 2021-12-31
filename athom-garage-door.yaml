@@ -32,7 +32,7 @@ dashboard_import:
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
     disabled_by_default: true
 
 binary_sensor:
@@ -62,17 +62,18 @@ binary_sensor:
           - ON for at most 1s
           - OFF for at least 0.2s
         then:
-          switch.turn_on: relay
+          - switch.turn_on: relay
       - timing:
           - ON for at least 4s
         then:
-          switch.turn_on: restart_switch
+          - button.press: restart_button
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     pin: GPIO5
     name: "${friendly_name} Relay"
