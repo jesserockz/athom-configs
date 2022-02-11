@@ -14,7 +14,6 @@ esphome:
 esp8266:
   board: esp8285
   restore_from_flash: true
-  board_flash_mode: dout
 
 api:
 
