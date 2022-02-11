@@ -1,0 +1,88 @@
+substitutions:
+  name: "athom-ls-4p-4wire"
+  friendly_name: "Athom LED Controller"
+  project_name: "athom.ls-4p-4wire"
+  project_version: "1.0"
+  button_toggle: "true"
+  light_restore_mode: RESTORE_DEFAULT_OFF
+  number_of_leds: '150'
+  led_chipset: WS2801
+  led_rgb_order: GRB
+
+esphome:
+  name: "${name}"
+  name_add_mac_suffix: true
+  project:
+    name: "${project_name}"
+    version: "${project_version}"
+
+esp8266:
+  board: esp01_1m
+  restore_from_flash: true
+
+api:
+
+ota:
+
+logger:
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-ls-4p-4wire.yaml
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+  - platform: gpio
+    name: "${friendly_name} Button"
+    pin:
+      number: GPIO0
+      inverted: true
+    on_click:
+      - if:
+          condition:
+            lambda: "return ${button_toggle} == true;"
+          then:
+            - light.toggle: leds
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime"
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"
+
+power_supply:
+  - id: relay
+    pin: GPIO12
+
+light:
+  - platform: fastled_spi
+    data_pin: GPIO1
+    clock_pin: GPIO3
+    id: leds
+    name: "${friendly_name}"
+    power_supply: relay
+    chipset: ${led_chipset}
+    num_leds: ${number_of_leds}
+    rgb_order: ${led_rgb_order}
+    restore_mode: ${light_restore_mode}
+    effects:
+      - addressable_rainbow:
+      - addressable_scan:
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
+      disabled_by_default: true
