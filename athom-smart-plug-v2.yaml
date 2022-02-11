@@ -3,16 +3,18 @@ substitutions:
   friendly_name: "Athom Smart Plug V2"
   project_name: "athom.smart-plug-v2"
   project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
   name: "${device_name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
-  esp8266_restore_from_flash: true
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -59,7 +61,7 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
 sensor:
   - platform: uptime
@@ -73,7 +75,7 @@ sensor:
       name: "${friendly_name} Voltage"
     power:
       name: "${friendly_name} Power"
-      id: socket_my_power
+      id: power_sensor
     energy:
       name: "${friendly_name} Energy"
       unit_of_measurement: kWh
@@ -84,22 +86,26 @@ sensor:
 
   - platform: total_daily_energy
     name: "${friendly_name} Total Daily Energy"
-    power_id: socket_my_power
+    restore: true
+    min_save_interval: 180s
+    power_id: power_sensor
     unit_of_measurement: kWh
     accuracy_decimals: 3
     filters:
       - multiply: 0.001
 
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     name: "${friendly_name}"
     pin: GPIO12
     id: relay
+    restore_mode: ${relay_restore_mode}
 
 light:
   - platform: status_led

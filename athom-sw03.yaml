@@ -3,15 +3,20 @@ substitutions:
   friendly_name: "Athom SW03"
   project_name: "athom.sw03"
   project_version: "1.0"
+  light1_restore_mode: RESTORE_DEFAULT_OFF
+  light2_restore_mode: RESTORE_DEFAULT_OFF
+  light3_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
   name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -122,6 +127,7 @@ light:
     name: "${friendly_name} Light 1"
     id: light1
     output: relay1
+    restore_mode: ${light1_restore_mode}
     on_turn_on:
       - light.turn_on: led1
     on_turn_off:
@@ -130,6 +136,7 @@ light:
     name: "${friendly_name} Light 2"
     id: light2
     output: relay2
+    restore_mode: ${light2_restore_mode}
     on_turn_on:
       - light.turn_on: led2
     on_turn_off:
@@ -138,6 +145,7 @@ light:
     name: "${friendly_name} Light 3"
     id: light3
     output: relay3
+    restore_mode: ${light3_restore_mode}
     on_turn_on:
       - light.turn_on: led3
     on_turn_off:
