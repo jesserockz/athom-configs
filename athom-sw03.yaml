@@ -111,7 +111,7 @@ output:
 
 light:
   - platform: status_led
-    name: "${friendly_name} Wifi LED"
+    name: "${friendly_name} Status LED"
     disabled_by_default: true
     pin:
       number: GPIO0
