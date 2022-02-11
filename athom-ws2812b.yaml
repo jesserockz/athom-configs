@@ -40,7 +40,6 @@ binary_sensor:
 
   - platform: gpio
     name: "${friendly_name} Button"
-    id: button
     pin:
       number: GPIO0
       inverted: true
