@@ -3,6 +3,7 @@ substitutions:
   friendly_name: "Athom Smart Plug"
   project_name: "athom.smart-plug"
   project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
   name: "${name}"
@@ -123,7 +124,7 @@ switch:
     name: "${friendly_name}"
     pin: GPIO14
     id: relay
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: ${relay_restore_mode}
     on_turn_on:
       - light.turn_on: blue_led
 

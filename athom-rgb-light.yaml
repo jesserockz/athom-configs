@@ -3,15 +3,18 @@ substitutions:
   friendly_name: "Athom RGB Light Strip"
   project_name: "athom.rgb-light"
   project_version: "1.0"
+  light_restore_mode: RESTORE_DEFAULT_ON
 
 esphome:
   name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -33,24 +36,6 @@ dashboard_import:
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
-
-  - platform: gpio
-    pin:
-      number: 0
-      mode: INPUT_PULLUP
-      inverted: true
-    name: "${friendly_name} Button"
-    disabled_by_default: true
-    on_multi_click:
-      - timing:
-          - ON for at most 1s
-          - OFF for at least 0.2s
-        then:
-          - light.toggle: light1
-      - timing:
-          - ON for at least 4s
-        then:
-          - button.press: restart_button
 
 sensor:
   - platform: uptime
@@ -75,7 +60,7 @@ output:
 light:
   - platform: rgb
     name: "${friendly_name}"
-    id: light1
+    restore_mode: ${light_restore_mode}
     red: red_output
     green: green_output
     blue: blue_output

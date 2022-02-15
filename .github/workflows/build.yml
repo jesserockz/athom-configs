@@ -28,7 +28,7 @@ jobs:
           - sw02
           - sw03
           - sw04
-          - cb20
+          - cb02
           - ls-4p-3wire
           - ls-4p-4wire
         esphome:
