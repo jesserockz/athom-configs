@@ -7,11 +7,13 @@ substitutions:
 esphome:
   name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -101,10 +103,12 @@ sensor:
     update_interval: 5s
 
   - platform: total_daily_energy
-    name: "${friendly_name} Total Daily Energy"
+    name: "${friendly_name} Total Energy"
     power_id: socket_my_power
     unit_of_measurement: kWh
     accuracy_decimals: 3
+    restore: true
+    min_save_interval: 180s
     filters:
       - multiply: 0.001
 
