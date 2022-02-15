@@ -88,7 +88,7 @@ switch:
 
 light:
   - platform: status_led
-    name: "${friendly_name} WiFi LED"
+    name: "${friendly_name} Status LED"
     id: wifi_led
     disabled_by_default: true
     pin: GPIO12

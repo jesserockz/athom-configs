@@ -1,23 +1,17 @@
 substitutions:
-  name: "athom-sw04"
-  friendly_name: "Athom SW04"
-  project_name: "athom.sw04"
+  device_name: "athom-sw02"
+  friendly_name: "Athom SW02"
+  project_name: "athom.sw02"
   project_version: "1.0"
-  light1_restore_mode: RESTORE_DEFAULT_OFF
-  light2_restore_mode: RESTORE_DEFAULT_OFF
-  light3_restore_mode: RESTORE_DEFAULT_OFF
-  light4_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
-  name: "${name}"
+  name: "${device_name}"
   name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
-
-esp8266:
-  board: esp8285
-  restore_from_flash: true
 
 api:
 
@@ -34,9 +28,6 @@ wifi:
 
 captive_portal:
 
-dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-sw04.yaml
-
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
@@ -45,7 +36,7 @@ binary_sensor:
   - platform: gpio
     pin:
       inverted: true
-      number: GPIO12
+      number: GPIO3
     name: "${friendly_name} Button 1"
     disabled_by_default: true
     on_multi_click:
@@ -57,45 +48,25 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - button.press: restart_button
+          - switch.turn_on: restart_switch
   - platform: gpio
     pin:
       inverted: true
-      number: GPIO3
+      number: GPIO5
     name: "${friendly_name} Button 2"
     disabled_by_default: true
     on_click:
       max_length: 0.5s
       then:
         - light.toggle: light2
-  - platform: gpio
-    pin:
-      inverted: true
-      number: GPIO5
-    name: "${friendly_name} Button 3"
-    disabled_by_default: true
-    on_click:
-      max_length: 0.5s
-      then:
-        - light.toggle: light3
-  - platform: gpio
-    pin:
-      inverted: true
-      number: GPIO16
-    name: "${friendly_name} Button 4"
-    disabled_by_default: true
-    on_click:
-      max_length: 0.5s
-      then:
-        - light.toggle: light4
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime"
+    name: "${friendly_name} Uptime Sensor"
 
-button:
+switch:
   - platform: restart
-    id: restart_button
+    id: restart_switch
     name: "${friendly_name} Restart"
 
 output:
@@ -106,16 +77,24 @@ output:
   - platform: gpio
     pin: GPIO4
     id: relay2
-  - platform: gpio
-    pin: GPIO15
-    id: relay3
-  - platform: gpio
-    pin: GPIO14
-    id: relay4
+    
+  # - platform: gpio
+  #   pin: GPIO16
+  #   id: io16
+
+  # Button LEDs (1.0 = Blue / 0.0 = Red)
+  - platform: esp8266_pwm
+    pin: GPIO16
+    inverted: true
+    id: led1
+  - platform: esp8266_pwm
+    pin: GPIO1
+    inverted: true
+    id: led2
 
 light:
   - platform: status_led
-    name: "${friendly_name} Status LED"
+    name: "${friendly_name} Wifi LED"
     disabled_by_default: true
     pin:
       number: GPIO0
@@ -126,22 +105,32 @@ light:
     name: "${friendly_name} Light 1"
     id: light1
     output: relay1
-    restore_mode: ${light1_restore_mode}
+    on_turn_on:
+      - light.turn_on: light3
+    on_turn_off:
+      - light.turn_off: light3
   - platform: binary
     name: "${friendly_name} Light 2"
     id: light2
     output: relay2
-    restore_mode: ${light2_restore_mode}
-  - platform: binary
-    name: "${friendly_name} Light 3"
+    on_turn_on:
+      - light.turn_on: light4
+    on_turn_off:
+      - light.turn_off: light4
+
+  # Button LEDs
+  - platform: monochromatic
+    name: "${friendly_name} LED1"
+    disabled_by_default: true
     id: light3
-    output: relay3
-    restore_mode: ${light3_restore_mode}
-  - platform: binary
-    name: "${friendly_name} Light 4"
+    output: led1
+    default_transition_length: 500ms
+  - platform: monochromatic
+    name: "${friendly_name} LED2"
+    disabled_by_default: true
     id: light4
-    output: relay4
-    restore_mode: ${light4_restore_mode}
+    output: led2
+    default_transition_length: 500ms
 
 text_sensor:
   - platform: wifi_info
