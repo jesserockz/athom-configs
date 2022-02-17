@@ -4,7 +4,10 @@ substitutions:
   project_name: "athom.ws2812b"
   project_version: "1.0"
   button_toggle: "true"
-  light_restore_mode: RESTORE_DEFAULT_OFF
+  led_restore_mode: RESTORE_DEFAULT_OFF
+  number_of_leds: '150'
+  led_rgb_order: GRB
+  led_chipset: WS2811
 
 esphome:
   name: "${name}"
@@ -16,6 +19,8 @@ esphome:
 esp8266:
   board: esp01_1m
   restore_from_flash: true
+  framework:
+    version: 2.7.4
 
 api:
 
@@ -61,13 +66,13 @@ button:
 
 light:
   - platform: fastled_clockless
-    pin: GPIO2
+    pin: GPIO1
     id: leds
     name: "${friendly_name}"
-    chipset: WS2811
-    num_leds: 150
-    rgb_order: GRB
-    restore_mode: ${light_restore_mode}
+    chipset: ${led_chipset}
+    num_leds: ${number_of_leds}
+    rgb_order: ${led_rgb_order}
+    restore_mode: ${led_restore_mode}
     effects:
       - addressable_rainbow:
       - addressable_scan:
