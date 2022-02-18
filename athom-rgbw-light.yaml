@@ -1,0 +1,89 @@
+substitutions:
+  name: "athom-rgbw-light"
+  friendly_name: "Athom RGBW Light"
+  project_name: "athom.rgbw-light"
+  project_version: "1.0"
+  button_toggle: "true"
+
+esphome:
+  name: "${name}"
+  name_add_mac_suffix: true
+  platform: ESP8266
+  board: esp8285
+  project:
+    name: "${project_name}"
+    version: "${project_version}"
+
+api:
+
+ota:
+
+logger:
+
+mdns:
+  disabled: false
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-rgbw-light.yaml
+  
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+  - platform: gpio
+    name: "${friendly_name} Button"
+    id: toggle_button
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: true
+    on_click:
+      - if:
+          condition:
+            lambda: "return ${button_toggle} == true;"
+          then:
+            - light.toggle: leds
+            
+output:
+  - platform: esp8266_pwm
+    id: output_red
+    pin: GPIO4
+    
+  - platform: esp8266_pwm
+    id: output_green
+    pin: GPIO12
+    
+  - platform: esp8266_pwm
+    id: output_blue
+    pin: GPIO14
+    
+  - platform: esp8266_pwm
+    id: output_white
+    pin: GPIO13
+    
+light:
+  - platform: rgbw
+    name: "${friendly_name}"
+    id: leds
+    red: output_red
+    green: output_green
+    blue: output_blue
+    white: output_white
+    color_interlock: true
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime Sensor"
+    
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
+      disabled_by_default: true
