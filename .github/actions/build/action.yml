@@ -38,7 +38,7 @@ runs:
     - name: Copy generated file
       shell: bash
       run: |
-        cp ./athom-${{ inputs.device }}/.pioenvs/${{ steps.info.outputs.devicename }}/firmware.bin \
+        cp .esphome/build/${{ steps.info.outputs.devicename }}/.pioenvs/${{ steps.info.outputs.devicename }}/firmware.bin \
           ./${{ steps.info.outputs.name }}--${{ steps.info.outputs.version }}.bin
 
     - name: Upload binary

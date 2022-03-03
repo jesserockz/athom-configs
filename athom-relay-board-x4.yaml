@@ -1,17 +1,23 @@
 substitutions:
-  device_name: "athom-relay-board-x4"
+  name: "athom-relay-board-x4"
   friendly_name: "Athom Relay Board x4"
   project_name: "athom.relay-board-x4"
   project_version: "1.0"
+  relay1_restore_mode: RESTORE_DEFAULT_OFF
+  relay2_restore_mode: RESTORE_DEFAULT_OFF
+  relay3_restore_mode: RESTORE_DEFAULT_OFF
+  relay4_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -27,38 +33,47 @@ wifi:
 
 captive_portal:
 
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-relay-board-x4.yaml
+
 binary_sensor:
   - platform: status
     name: "${friendly_name} Status"
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
+    disabled_by_default: true
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     name: "${friendly_name} - 1"
     pin: GPIO16
     id: relay1
+    restore_mode: ${relay1_restore_mode}
 
   - platform: gpio
     name: "${friendly_name} - 2"
     pin: GPIO14
     id: relay2
+    restore_mode: ${relay2_restore_mode}
 
   - platform: gpio
     name: "${friendly_name} - 3"
     pin: GPIO12
     id: relay3
+    restore_mode: ${relay3_restore_mode}
 
   - platform: gpio
     name: "${friendly_name} - 4"
     pin: GPIO13
     id: relay4
+    restore_mode: ${relay4_restore_mode}
 
 light:
   - platform: status_led
@@ -67,7 +82,7 @@ light:
     pin:
       inverted: true
       number: GPIO5
-      
+
 text_sensor:
   - platform: wifi_info
     ip_address:

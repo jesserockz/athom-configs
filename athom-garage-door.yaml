@@ -1,17 +1,18 @@
 substitutions:
-  device_name: "athom-garage-door"
+  name: "athom-garage-door"
   friendly_name: "Athom Garage Door"
   project_name: "athom.garage-door"
   project_version: "1.0"
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
 
 api:
 
@@ -27,9 +28,12 @@ wifi:
 
 captive_portal:
 
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-garage-door.yaml
+
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
     disabled_by_default: true
 
 binary_sensor:
@@ -59,17 +63,18 @@ binary_sensor:
           - ON for at most 1s
           - OFF for at least 0.2s
         then:
-          switch.turn_on: relay
+          - switch.turn_on: relay
       - timing:
           - ON for at least 4s
         then:
-          switch.turn_on: restart_switch
+          - button.press: restart_button
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     pin: GPIO5
     name: "${friendly_name} Relay"
@@ -83,7 +88,7 @@ switch:
 
 light:
   - platform: status_led
-    name: "${friendly_name} WiFi LED"
+    name: "${friendly_name} Status LED"
     id: wifi_led
     disabled_by_default: true
     pin: GPIO12

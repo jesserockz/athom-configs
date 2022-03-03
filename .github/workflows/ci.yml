@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+
+jobs:
+  build:
+    name: Building ${{ matrix.device }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        device:
+          - cb02
+          - garage-door
+          - mini-switch
+          - relay-board-x1
+          - relay-board-x2
+          - relay-board-x4
+          - relay-board-x8
+          - rgb-light
+          - rgbct-light
+          - rgbww-light
+          - smart-plug
+          - sw01
+          - sw02
+          - sw03
+          - sw04
+          - ws2812b
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v2
+      - uses: esphome/build-action@v1.1.0
+        id: esphome-build
+        with:
+          yaml_file: athom-${{ matrix.device }}.yaml

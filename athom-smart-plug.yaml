@@ -1,17 +1,20 @@
 substitutions:
-  device_name: "athom-smart-plug"
+  name: "athom-smart-plug"
   friendly_name: "Athom Smart Plug"
   project_name: "athom.smart-plug"
   project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -26,6 +29,9 @@ wifi:
   ap: {} # This spawns an AP with the device name and mac address with no password.
 
 captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-smart-plug.yaml
 
 binary_sensor:
   - platform: status
@@ -47,11 +53,12 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
+    disabled_by_default: true
 
   - platform: hlw8012
     sel_pin:
@@ -97,24 +104,27 @@ sensor:
     update_interval: 5s
 
   - platform: total_daily_energy
-    name: "${friendly_name} Total Daily Energy"
+    name: "${friendly_name} Total Energy"
     power_id: socket_my_power
     unit_of_measurement: kWh
     accuracy_decimals: 3
+    restore: true
+    min_save_interval: 180s
     filters:
       - multiply: 0.001
 
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
+switch:
   - platform: gpio
     name: "${friendly_name}"
     pin: GPIO14
     id: relay
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: ${relay_restore_mode}
     on_turn_on:
       - light.turn_on: blue_led
 

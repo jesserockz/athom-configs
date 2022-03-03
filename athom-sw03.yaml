@@ -1,17 +1,22 @@
 substitutions:
-  device_name: "athom-sw03"
+  name: "athom-sw03"
   friendly_name: "Athom SW03"
   project_name: "athom.sw03"
   project_version: "1.0"
+  light1_restore_mode: RESTORE_DEFAULT_OFF
+  light2_restore_mode: RESTORE_DEFAULT_OFF
+  light3_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -27,6 +32,9 @@ wifi:
   ap: {} # This spawns an AP with the device name and mac address with no password.
 
 captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-sw03.yaml
 
 binary_sensor:
   - platform: status
@@ -48,7 +56,7 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
   - platform: gpio
     pin:
       inverted: true
@@ -72,11 +80,12 @@ binary_sensor:
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
+    disabled_by_default: true
 
-switch:
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
 output:
@@ -107,7 +116,7 @@ output:
 
 light:
   - platform: status_led
-    name: "${friendly_name} Wifi LED"
+    name: "${friendly_name} Status LED"
     disabled_by_default: true
     pin:
       number: GPIO0
@@ -118,6 +127,7 @@ light:
     name: "${friendly_name} Light 1"
     id: light1
     output: relay1
+    restore_mode: ${light1_restore_mode}
     on_turn_on:
       - light.turn_on: led1
     on_turn_off:
@@ -126,6 +136,7 @@ light:
     name: "${friendly_name} Light 2"
     id: light2
     output: relay2
+    restore_mode: ${light2_restore_mode}
     on_turn_on:
       - light.turn_on: led2
     on_turn_off:
@@ -134,6 +145,7 @@ light:
     name: "${friendly_name} Light 3"
     id: light3
     output: relay3
+    restore_mode: ${light3_restore_mode}
     on_turn_on:
       - light.turn_on: led3
     on_turn_off:

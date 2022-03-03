@@ -1,7 +1,7 @@
 substitutions:
-  name: "athom-ws2812b"
-  friendly_name: "Athom WS2812B"
-  project_name: "athom.ws2812b"
+  name: "athom-ls-4p-3wire"
+  friendly_name: "Athom LED Controller"
+  project_name: "athom.ls-4p-3wire"
   project_version: "1.0"
   button_toggle: "true"
   led_restore_mode: RESTORE_DEFAULT_OFF
@@ -37,7 +37,7 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-ws2812b.yaml
+  package_import_url: github://athom-tech/athom-configs/athom-ls-4p-3wire.yaml
 
 binary_sensor:
   - platform: status
@@ -64,11 +64,16 @@ button:
     id: restart_button
     name: "${friendly_name} Restart"
 
+power_supply:
+  - id: relay
+    pin: GPIO12
+
 light:
   - platform: fastled_clockless
     pin: GPIO1
     id: leds
     name: "${friendly_name}"
+    power_supply: relay
     chipset: ${led_chipset}
     num_leds: ${number_of_leds}
     rgb_order: ${led_rgb_order}

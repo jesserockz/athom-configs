@@ -1,8 +1,9 @@
 substitutions:
-  device_name: "athom-cb02-switch"
-  friendly_name: "Athom CB02 Switch"
-  project_name: "athom.cb02-switch"
+  device_name: "athom-smart-plug-v2"
+  friendly_name: "Athom Smart Plug V2"
+  project_name: "athom.smart-plug-v2"
   project_version: "1.0"
+  relay_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
   name: "${device_name}"
@@ -20,6 +21,10 @@ api:
 ota:
 
 logger:
+  baud_rate: 0
+
+mdns:
+  disabled: false
 
 web_server:
   port: 80
@@ -30,7 +35,11 @@ wifi:
 captive_portal:
 
 dashboard_import:
-  package_import_url: github://athom-tech/athom-configs/athom-cb02.yaml
+  package_import_url: github://athom-tech/athom-configs/athom-smart-plug-v2.yaml
+
+uart:
+  rx_pin: RX
+  baud_rate: 4800
 
 binary_sensor:
   - platform: status
@@ -38,7 +47,7 @@ binary_sensor:
 
   - platform: gpio
     pin:
-      number: 3
+      number: 5
       mode: INPUT_PULLUP
       inverted: true
     name: "${friendly_name} Power Button"
@@ -56,8 +65,35 @@ binary_sensor:
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime"
-    disabled_by_default: true
+    name: "${friendly_name} Uptime Sensor"
+
+  - platform: cse7766
+    update_interval: 10s
+    current:
+      name: "${friendly_name} Current"
+    voltage:
+      name: "${friendly_name} Voltage"
+    power:
+      name: "${friendly_name} Power"
+      id: power_sensor
+    energy:
+      name: "${friendly_name} Energy"
+      unit_of_measurement: kWh
+      filters:
+        # Multiplication factor from W to kW is 0.001
+        - multiply: 0.001
+
+
+  - platform: total_daily_energy
+    name: "${friendly_name} Total Daily Energy"
+    restore: true
+    min_save_interval: 180s
+    power_id: power_sensor
+    unit_of_measurement: kWh
+    accuracy_decimals: 3
+    filters:
+      - multiply: 0.001
+
 
 button:
   - platform: restart
@@ -67,14 +103,9 @@ button:
 switch:
   - platform: gpio
     name: "${friendly_name}"
-    pin: GPIO13
+    pin: GPIO12
     id: relay
-    restore_mode: RESTORE_DEFAULT_ON
-    on_turn_on:
-      - light.turn_on: blue_led
-
-    on_turn_off:
-      - light.turn_off: blue_led
+    restore_mode: ${relay_restore_mode}
 
 light:
   - platform: status_led
@@ -83,7 +114,10 @@ light:
     disabled_by_default: true
     pin:
       inverted: true
-      number: GPIO4
+      number: GPIO13
+
+time:
+  - platform: sntp
 
 text_sensor:
   - platform: wifi_info

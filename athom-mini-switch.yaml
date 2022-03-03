@@ -1,17 +1,20 @@
 substitutions:
-  device_name: "athom-mini-switch"
+  name: "athom-mini-switch"
   friendly_name: "Athom Mini Switch"
   project_name: "athom.mini-switch"
   project_version: "1.0"
+  light_restore_mode: RESTORE_DEFAULT_ON
 
 esphome:
-  name: "${device_name}"
+  name: "${name}"
   name_add_mac_suffix: true
-  platform: ESP8266
-  board: esp8285
   project:
     name: "${project_name}"
     version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
 
 api:
 
@@ -27,9 +30,12 @@ wifi:
 
 captive_portal:
 
-switch:
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-mini-switch.yaml
+
+button:
   - platform: restart
-    id: restart_switch
+    id: restart_button
     name: "${friendly_name} Restart"
 
 output:
@@ -49,11 +55,11 @@ light:
     id: mini_relay
     output: relay_output
     name: "${friendly_name} Light"
-    restore_mode: RESTORE_DEFAULT_ON
+    restore_mode: ${light_restore_mode}
 
 sensor:
   - platform: uptime
-    name: "${friendly_name} Uptime Sensor"
+    name: "${friendly_name} Uptime"
     disabled_by_default: true
 
 binary_sensor:
@@ -79,7 +85,7 @@ binary_sensor:
           - ON for at most 0.5s
           - OFF for at most 0.5s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
   # Button on mini switch
   - platform: gpio
@@ -98,7 +104,7 @@ binary_sensor:
       - timing:
           - ON for at least 4s
         then:
-          - switch.turn_on: restart_switch
+          - button.press: restart_button
 
   - platform: status
     name: "${friendly_name} Status"
