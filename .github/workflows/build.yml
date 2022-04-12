@@ -25,11 +25,12 @@ jobs:
           - relay-board-x8
           - smart-plug
           - sw01
+          - sw01-v2
           - sw02
+          - sw02-v2
           - sw03
           - sw04
           - cb02
-          - sw01_v2
           - ls-4p-3wire
           - ls-4p-4wire
         esphome:
