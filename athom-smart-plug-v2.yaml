@@ -71,11 +71,15 @@ sensor:
     update_interval: 10s
     current:
       name: "${friendly_name} Current"
+      filters:
+          - lambda: if (x < 0.08) return 0;
     voltage:
       name: "${friendly_name} Voltage"
     power:
       name: "${friendly_name} Power"
       id: power_sensor
+      filters:
+          - lambda: if (x < 6) return 0;
     energy:
       name: "${friendly_name} Energy"
       unit_of_measurement: kWh
