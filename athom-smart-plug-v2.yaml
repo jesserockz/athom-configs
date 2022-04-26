@@ -71,15 +71,15 @@ sensor:
     update_interval: 10s
     current:
       name: "${friendly_name} Current"
-      #filters:
-      #   - lambda: if (x < 0.060) return 0; else return x;   #For the chip will report less than 3w power when no load is connected
+      filters:
+         - lambda: if (x < 0.060) return 0; else return x;   #For the chip will report less than 3w power when no load is connected
     voltage:
       name: "${friendly_name} Voltage"
     power:
       name: "${friendly_name} Power"
       id: power_sensor
-      #filters:
-      #   - lambda: if (x < 3.0) return 0; else return x;    #For the chip will report less than 3w power when no load is connected
+      filters:
+         - lambda: if (x < 3.0) return 0; else return x;    #For the chip will report less than 3w power when no load is connected
     energy:
       name: "${friendly_name} Energy"
       unit_of_measurement: kWh
