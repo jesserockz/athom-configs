@@ -1,0 +1,112 @@
+substitutions:
+  name: "athom-sw01"
+  friendly_name: "Athom SW01"
+  project_name: "athom.sw01"
+  project_version: "1.0"
+  light_restore_mode: RESTORE_DEFAULT_OFF
+
+esphome:
+  name: "${name}"
+  name_add_mac_suffix: true
+  project:
+    name: "${project_name}"
+    version: "${project_version}"
+
+esp8266:
+  board: esp8285
+  restore_from_flash: true
+
+api:
+
+ota:
+
+logger:
+  baud_rate: 0
+
+web_server:
+  port: 80
+
+wifi:
+  ap: {} # This spawns an AP with the device name and mac address with no password.
+
+captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-sw01-v2.yaml
+
+binary_sensor:
+  - platform: status
+    name: "${friendly_name} Status"
+
+  # Touch Button
+  - platform: gpio
+    pin:
+      inverted: true
+      number: GPIO3
+    name: "${friendly_name} Button"
+    disabled_by_default: true
+    on_multi_click:
+      - timing:
+          - ON for at most 0.5s
+          - OFF for at least 0.2s
+        then:
+          - light.toggle: light1
+      - timing:
+          - ON for at least 4s
+        then:
+          - button.press: restart_button
+
+sensor:
+  - platform: uptime
+    name: "${friendly_name} Uptime"
+    disabled_by_default: true
+
+button:
+  - platform: restart
+    id: restart_button
+    name: "${friendly_name} Restart"
+
+output:
+  # Relay
+  - platform: gpio
+    pin: GPIO13
+    id: relay1
+
+  # Button LED (1.0 = Blue / 0.0 = Red)
+  - platform: esp8266_pwm
+    pin: GPIO16
+    inverted: true
+    id: button_led1
+
+light:
+  - platform: status_led
+    name: "${friendly_name} Status LED"
+    disabled_by_default: true
+    pin:
+      number: GPIO0
+      inverted: true
+
+  # Relay
+  - platform: binary
+    name: "${friendly_name} Light"
+    id: light1
+    output: relay1
+    restore_mode: ${light_restore_mode}
+    on_turn_on:
+      - light.turn_on: led1
+    on_turn_off:
+      - light.turn_off: led1
+
+  # Button LED
+  - platform: monochromatic
+    name: "${friendly_name} LED"
+    disabled_by_default: true
+    id: led1
+    output: button_led1
+    default_transition_length: 500ms
+
+text_sensor:
+  - platform: wifi_info
+    ip_address:
+      name: "${friendly_name} IP Address"
+      disabled_by_default: true
