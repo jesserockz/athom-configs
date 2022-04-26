@@ -26,6 +26,7 @@ jobs:
           - smart-plug
           - sw01
           - sw02
+          - sw02-v2
           - sw03
           - sw04
           - cb02
