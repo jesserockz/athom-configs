@@ -1,7 +1,7 @@
 substitutions:
-  device_name: "athom-sw02"
-  friendly_name: "Athom SW02"
-  project_name: "athom.sw02"
+  device_name: "athom-sw02-v2"
+  friendly_name: "Athom SW02 V2"
+  project_name: "athom.sw02-v2"
   project_version: "1.0"
   light1_restore_mode: RESTORE_DEFAULT_OFF
   light2_restore_mode: RESTORE_DEFAULT_OFF
