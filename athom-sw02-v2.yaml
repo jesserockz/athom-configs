@@ -1,8 +1,10 @@
 substitutions:
-  device_name: "athom-sw02"
-  friendly_name: "Athom SW02"
-  project_name: "athom.sw02"
+  device_name: "athom-sw02-v2"
+  friendly_name: "Athom SW02 V2"
+  project_name: "athom.sw02-v2"
   project_version: "1.0"
+  light1_restore_mode: RESTORE_DEFAULT_OFF
+  light2_restore_mode: RESTORE_DEFAULT_OFF
 
 esphome:
   name: "${device_name}"
@@ -27,6 +29,9 @@ wifi:
   ap: {} # This spawns an AP with the device name and mac address with no password.
 
 captive_portal:
+
+dashboard_import:
+  package_import_url: github://athom-tech/athom-configs/athom-sw02-v2.yaml
 
 binary_sensor:
   - platform: status
@@ -105,6 +110,8 @@ light:
     name: "${friendly_name} Light 1"
     id: light1
     output: relay1
+    restore_mode: ${light1_restore_mode}
+
     on_turn_on:
       - light.turn_on: light3
     on_turn_off:
@@ -113,6 +120,9 @@ light:
     name: "${friendly_name} Light 2"
     id: light2
     output: relay2
+    restore_mode: ${light2_restore_mode}
+
+
     on_turn_on:
       - light.turn_on: light4
     on_turn_off:
