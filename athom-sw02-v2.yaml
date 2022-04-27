@@ -1,8 +1,4 @@
 substitutions:
-  device_name: "athom-sw02"
-  friendly_name: "Athom SW02"
-  project_name: "athom.sw02"
-  project_version: "1.0"
 
 esphome:
   name: "${device_name}"
@@ -105,6 +101,7 @@ light:
     name: "${friendly_name} Light 1"
     id: light1
     output: relay1
+
     on_turn_on:
       - light.turn_on: light3
     on_turn_off:
@@ -113,6 +110,7 @@ light:
     name: "${friendly_name} Light 2"
     id: light2
     output: relay2
+
     on_turn_on:
       - light.turn_on: light4
     on_turn_off:
