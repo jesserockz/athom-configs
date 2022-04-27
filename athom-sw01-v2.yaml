@@ -1,7 +1,7 @@
 substitutions:
-  name: "athom-sw01"
-  friendly_name: "Athom SW01"
-  project_name: "athom.sw01"
+  name: "athom-sw01-v2"
+  friendly_name: "Athom SW01 V2"
+  project_name: "athom.sw01-v2"
   project_version: "1.0"
   light_restore_mode: RESTORE_DEFAULT_OFF
 
