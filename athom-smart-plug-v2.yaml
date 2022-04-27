@@ -74,6 +74,7 @@ sensor:
       filters:
           - lambda: if (x < 0.060) return 0; else return x;   #For the chip will report less than 3w power when no load is connected
 
+
     voltage:
       name: "${friendly_name} Voltage"
     power:
