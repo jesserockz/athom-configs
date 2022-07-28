@@ -102,7 +102,7 @@ cover:
       then:
         - if:
             condition:
-              lambda: 'return id(contact).state == false;'
+              lambda: 'return !id(contact).state;'
             then:
               - switch.turn_on: relay
     stop_action:
@@ -111,7 +111,7 @@ cover:
       then:
         - if:
             condition:
-              lambda: 'return id(contact).state == true;'
+              lambda: 'return id(contact).state;'
             then:
               - switch.turn_on: relay
 
