@@ -99,11 +99,21 @@ cover:
     name: "${friendly_name}"
     lambda: "return id(contact).state ? COVER_OPEN : COVER_CLOSED;"
     open_action:
-      - switch.turn_on: relay
+      then:
+        - if:
+            condition:
+              lambda: 'return id(contact).state == false;'
+            then:
+              - switch.turn_on: relay
     stop_action:
       - switch.turn_on: relay
     close_action:
-      - switch.turn_on: relay
+      then:
+        - if:
+            condition:
+              lambda: 'return id(contact).state == true;'
+            then:
+              - switch.turn_on: relay
 
 text_sensor:
   - platform: wifi_info
