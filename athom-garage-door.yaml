@@ -2,7 +2,7 @@ substitutions:
   name: "athom-garage-door"
   friendly_name: "Athom Garage Door"
   project_name: "athom.garage-door"
-  project_version: "1.0"
+  project_version: "1.1"
 
 esphome:
   name: "${name}"
