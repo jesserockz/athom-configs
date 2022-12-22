@@ -2,7 +2,7 @@ substitutions:
   name: "athom-garage-door"
   friendly_name: "Athom Garage Door"
   project_name: "athom.garage-door"
-  project_version: "1.0"
+  project_version: "1.1"
 
 esphome:
   name: "${name}"
@@ -99,11 +99,21 @@ cover:
     name: "${friendly_name}"
     lambda: "return id(contact).state ? COVER_OPEN : COVER_CLOSED;"
     open_action:
-      - switch.turn_on: relay
+      then:
+        - if:
+            condition:
+              lambda: 'return !id(contact).state;'
+            then:
+              - switch.turn_on: relay
     stop_action:
       - switch.turn_on: relay
     close_action:
-      - switch.turn_on: relay
+      then:
+        - if:
+            condition:
+              lambda: 'return id(contact).state;'
+            then:
+              - switch.turn_on: relay
 
 text_sensor:
   - platform: wifi_info
